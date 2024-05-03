@@ -1,0 +1,135 @@
+@import "fonts.css";
+
+$color-prime : #F6A627;
+$color-prime-hover : #F59A0A;
+$color-text: #1F2937;
+$color-secondary : #19336C;
+$color-dark-blue: #0C2763;
+
+body {
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 500;
+  font-family: 'Montserrat', sans-serif;
+  color: $color-text;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+main {
+  flex: 1 1 auto;
+}
+
+h1, h2,h3, h4, h5, h6 {
+  font-family: 'Montserrat',  sans-serif;
+  font-weight: 700;
+  color: $color-dark-blue;
+}
+
+.container {
+  --max-width: 1170px;
+  --padding-side: 15px;
+  width: min(var(--max-width), 100% - (var(--padding-side) * 2));
+  margin-inline: auto;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  z-index: 10;
+  &__wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.layout-content {
+  p {
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 30px;
+  }
+  & > *:not(p) {
+    margin-bottom: 30px;
+  }
+  ul, ol {
+    display: grid;
+    row-gap: 10px;
+  }
+
+  li {
+    font-weight: 400;
+    font-size: 16px;
+    color: #111827;
+    position: relative;
+  }
+
+  li:before {
+    position: absolute;
+    left: 0;
+    color: $color-prime;
+    text-align: center;
+    display: inline-block;
+  }
+  ul li {
+    padding-left: 16px;
+  }
+  ul li:before {
+    content: '';
+    background-color: $color-prime;
+    top: 8px;
+    border-radius: 50%;
+    width: 5px;
+    height: 5px;
+  }
+  ol {
+    list-style: none;
+    counter-reset: item;
+  }
+  ol li {
+    counter-increment: item;
+    padding-left: 28px;
+  }
+  ol li:before {
+    content: counter(item) '.';
+    --size: 18px;
+    left: calc(-1 * var(--size) + 18px);
+    line-height: var(--size);
+    width: var(--size);
+    height: var(--size);
+  }
+  &__row {
+    display: grid;
+    grid-template-columns: 70% 30%;
+  }
+  @media screen and (max-width: 1024px){
+    &__row {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.loop {
+  &__row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(284px, 1fr));
+    grid-gap: 15px;
+  }
+}
+
+/** Sidebar */
+.primary-sidebar {
+  padding: 0 0 20px 40px;
+}

@@ -1,0 +1,78 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ol,
+ul,
+li,
+button {
+    margin: 0;
+    padding: 0;
+}
+
+ol,
+ul,
+li {
+    list-style: none;
+}
+
+html:focus-within {
+    scroll-behavior: smooth;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+    transition: all 0.3s linear;
+}
+img,
+picture {
+    max-width: 100%;
+    display: inline-flex;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+    resize: none;
+}
+
+button {
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+input,
+textarea,
+select {
+    outline: none;
+    border: none;
+}
+
+input[type=submit],
+select {
+    cursor: pointer;
+}
+
+a,
+button,
+input {
+    transition: all .3s linear;
+}
+
+path {
+    transition: fill .3s ease;
+}

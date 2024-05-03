@@ -1,0 +1,124 @@
+@import "fonts.css";
+body {
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 500;
+  font-family: "Montserrat", sans-serif;
+  color: #1F2937;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+main {
+  flex: 1 1 auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  color: #0C2763;
+}
+
+.container {
+  --max-width: 1170px;
+  --padding-side: 15px;
+  width: min(var(--max-width), 100% - var(--padding-side) * 2);
+  margin-inline: auto;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  z-index: 10;
+}
+.header__wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.layout-content p {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+.layout-content h1, .layout-content h2, .layout-content h3, .layout-content h4, .layout-content h5, .layout-content h6 {
+  margin-bottom: 30px;
+}
+.layout-content > *:not(p) {
+  margin-bottom: 30px;
+}
+.layout-content ul, .layout-content ol {
+  display: grid;
+  row-gap: 10px;
+}
+.layout-content li {
+  font-weight: 400;
+  font-size: 16px;
+  color: #111827;
+  position: relative;
+}
+.layout-content li:before {
+  position: absolute;
+  left: 0;
+  color: #F6A627;
+  text-align: center;
+  display: inline-block;
+}
+.layout-content ul li {
+  padding-left: 16px;
+}
+.layout-content ul li:before {
+  content: "";
+  background-color: #F6A627;
+  top: 8px;
+  border-radius: 50%;
+  width: 5px;
+  height: 5px;
+}
+.layout-content ol {
+  list-style: none;
+  counter-reset: item;
+}
+.layout-content ol li {
+  counter-increment: item;
+  padding-left: 28px;
+}
+.layout-content ol li:before {
+  content: counter(item) ".";
+  --size: 18px;
+  left: calc(-1 * var(--size) + 18px);
+  line-height: var(--size);
+  width: var(--size);
+  height: var(--size);
+}
+.layout-content__row {
+  display: grid;
+  grid-template-columns: 70% 30%;
+}
+@media screen and (max-width: 1024px) {
+  .layout-content__row {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+.loop__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(284px, 1fr));
+  grid-gap: 15px;
+}
+
+/** Sidebar */
+.primary-sidebar {
+  padding: 0 0 20px 40px;
+}
+
+/*# sourceMappingURL=theme.css.map */
