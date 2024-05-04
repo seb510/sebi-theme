@@ -129,6 +129,21 @@ h1, h2,h3, h4, h5, h6 {
   }
 }
 
+.btn-primary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  padding: 12px 16px;
+  max-width: fit-content;
+  margin: 20px auto;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  background-color: $color-prime;
+  color: $color-text;
+}
+
 .template-post {
   display: flex;
   flex-direction: column;
