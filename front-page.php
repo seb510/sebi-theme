@@ -22,6 +22,17 @@
                 ]);
                 ?>
 
+
+                <div class="laschf-sort">
+                    <select name="sort" id="sorting-post" aria-label="Sorting">
+                        <option value="date-desc" selected >Date (Newest - Oldest)</option>
+                        <option value="date-asc">Date (Oldest - Newest)</option>
+                        <option value="title-asc">Title (A - Z)</option>
+                        <option value="title-desc">Title (Z - A)</option>
+                    </select>
+                </div>
+
+
                 <?php if($publications->have_posts()): ?>
                 <div class="loop__row loop__row-js">
                     <?php
