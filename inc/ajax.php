@@ -9,23 +9,24 @@ function get_ajax_posts() {
     $category = (isset($_POST['category'])) ? $_POST['category'] : '';
     $author = (isset($_POST['author'])) ? $_POST['author'] : '';
 
-    $ajaxposts = new WP_Query([
+    $args = [
         'post_type'      => $post_type,
         'post_status'    => 'publish',
         'posts_per_page' => $ppp,
         'orderby'        => $orderby,
         'order'          => $order,
         'paged'          => $paged,
-    ]);
+    ];
 
-    if($category) {
-        $ajaxposts['category'] = $category;
+    if($category != '' && $category != 'all') {
+        $args['category_name'] = $category;
     }
 
     if($author) {
-        $ajaxposts['author'] = $author;
+        $args['author'] = $author;
     }
 
+    $ajaxposts = new WP_Query($args);
 
     $response = '';
     $max_pages = $ajaxposts->max_num_pages;

@@ -1,26 +1,24 @@
 <?php
-    $category = (isset($args['category'])) ? $args['category'] : '';
+    $category = (isset($args['category_name'])) ? $args['category_name'] : '';
+    var_dump($category);
 ?>
 <section class="section-content">
     <div class="container">
         <?php
-        $publications = new WP_Query([
+        $args = [
             'post_type'      => 'post',
             'post_status'    => 'publish',
             'posts_per_page' => 3,
             'orderby'        => 'date',
             'order'          => 'DESC',
             'paged'          => 1,
-        ]);
+        ];
 
-        if($category) {
-            $publications['category_name'] = $category;
+        if($category != '' && $category != 'all') {
+            $args['category_name'] = $category;
         }
-
-        var_dump($publications);
-        die();
+        $publications = new WP_Query($args);
         ?>
-
 
         <div class="laschf-sort">
             <select name="sort" id="sorting-post" aria-label="Sorting">
@@ -31,9 +29,8 @@
             </select>
         </div>
 
-
         <?php if($publications->have_posts()): ?>
-        <div class="loop__row loop__row-js">
+        <div class="loop__row loop__row-js" data-type="<?php echo 'post' ?>" data-category="<?php echo $category ?>" data-ppage="3">
             <?php
             while ($publications->have_posts()): $publications->the_post();
                 get_template_part('templates/blog-post');
@@ -47,9 +44,8 @@
 
         <?php if( 1 < $publications->max_num_pages ) { ?>
             <div class="btn__wrapper">
-                <button id="load-more-js" type="button" class="load-more-js btn-primary" data-cat="" data-ppage="3">Load more</button>
+                <button id="load-more-js" type="button" class="load-more-js btn-primary">Load more</button>
             </div>
         <?php } ?>
-
     </div>
 </section>

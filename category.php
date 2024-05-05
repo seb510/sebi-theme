@@ -1,7 +1,6 @@
 <?php
 $category = get_the_category();
 $category_name = $category[0]->name;
-$category_slug = $category[0]->slug;
 get_header(); ?>
     <main>
         <section class="page-head">
@@ -15,10 +14,10 @@ get_header(); ?>
                 </div>
             </div>
         </section>
-        <?php /*get_template_part('parts/loop-pagination'); */?>
-        <?php get_template_part( 'parts/loop-loadmore', null, [
-            'category' => $category_name,
-        ] ); ?>
+        <?php get_template_part('parts/loop-pagination'); ?>
+        <?php /*get_template_part( 'parts/loop-loadmore', null, [
+            'category_name' => $category_name,
+        ] ); */?>
 
     </main>
 <?php get_footer(); ?>

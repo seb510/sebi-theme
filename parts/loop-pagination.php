@@ -1,6 +1,14 @@
 <section class="news-content loop-load-pagination">
 	<div class="container">
-		<div class="loop__row">
+        <form method="GET">
+            <select name="orderby" id="orderby" aria-label="Sorting">
+                <option value="date">Newest to Oldest</option>
+                <option value="title">Alphabetical</option>
+            </select>
+            <button type="submit">Apply</button>
+        </form>
+
+        <div class="loop__row">
             <?php if (have_posts()): while (have_posts()) : the_post(); ?>
                 <?php get_template_part('templates/blog-post'); ?>
             <?php endwhile; ?>
