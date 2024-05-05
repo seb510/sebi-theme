@@ -8,6 +8,7 @@ function get_ajax_posts() {
     $order = (isset($_POST['sort'])) ? $_POST['sort'] : 'DESC';
     $category = (isset($_POST['category'])) ? $_POST['category'] : '';
     $author = (isset($_POST['author'])) ? $_POST['author'] : '';
+    $search = (isset($_POST['search'])) ? $_POST['search'] : '';
 
     $args = [
         'post_type'      => $post_type,
@@ -20,6 +21,10 @@ function get_ajax_posts() {
 
     if($category != '' && $category != 'all') {
         $args['category_name'] = $category;
+    }
+
+    if($search != '') {
+        $args['s'] = $search;
     }
 
     if($author) {
@@ -39,7 +44,12 @@ function get_ajax_posts() {
         $output = ob_get_contents();
         ob_end_clean();
     } else {
-        $response = '';
+        $response .= '<div class="template-post template-post-empty">
+                        <p>
+                            Nothing found. Try again
+                        </p>
+                    </div>';
+        $output = $response;
     }
 
     $result = [

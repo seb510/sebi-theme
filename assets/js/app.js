@@ -7,10 +7,10 @@ jQuery( document ).ready(function($) {
             this.currentPage = 1;
             this.sortby = 'date';
             this.sort = 'DESC';
+            this.search_name = '';
             this.pPp = this.contentBlock.attr('data-ppage');
             this.category = this.contentBlock.attr('data-category');
             this.addListener();
-            console.log(this.category)
         }
 
         addListener () {
@@ -23,16 +23,28 @@ jQuery( document ).ready(function($) {
                 let current_sort =  this.value;
                 self.filterPost(current_sort);
             });
+
+            const my_search = [];
+            $(document).on('keyup', '#search-name', function (e) {
+                let input_value = $(this).val();
+                my_search.map(e => {
+                    clearTimeout(e)
+                })
+                my_search.push(setTimeout(() => {
+                    self.search_name = input_value.toLowerCase();
+                    self.submitRequest('filter')
+                }, 1000))
+            })
         }
 
         loadMore () {
-            this.currentPage++;
+            this.currentPage++
             this.submitRequest('loadmore')
         }
         filterPost (sortInput) {
-            this.currentPage = 1
+            this.currentPage = 1;
 
-            if(sortInput === 'date-asc') {
+             if(sortInput === 'date-asc') {
                 this.sortby = 'date';
                 this.sort = 'ASC';
             } else if (sortInput === 'date-desc') {
@@ -65,11 +77,13 @@ jQuery( document ).ready(function($) {
                     category: self.category,
                     sortby: self.sortby,
                     sort: self.sort,
+                    search : self.search_name,
                 },
                 beforeSend:function (){
                     self.contentBlock.addClass('loading');
                 },
                 success: function (res) {
+                    console.log(res)
                     self.contentBlock.removeClass('loading')
                     if(self.currentPage >= res.max) {
                         self.loadMoreBtn.hide();
