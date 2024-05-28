@@ -200,5 +200,43 @@ jQuery( document ).ready(function($) {
         }
     }
 
+       class ContactForm {
+        constructor($form) {
+            this.$form = $form;
+            this.$message = $form.find('.form-message');
+            this.init();
+        }
+
+        init() {
+            this.$form.on('submit', this.handleSubmit.bind(this));
+        }
+
+        handleSubmit(e) {
+            e.preventDefault();
+
+            const formData = this.$form.serialize() + '&action=send_contact_message';
+
+            $.ajax({
+                url: my_ajax_object.ajax_url,
+                type: "POST",
+                data: formData,
+                success: this.handleResponse.bind(this, 'success'),
+                error: this.handleResponse.bind(this, 'error')
+            });
+        }
+
+        handleResponse(type, response) {
+            this.$message.removeClass('success error');
+            if (type === 'success') {
+                this.$message.addClass("success").text("Message sent successfully!");
+                this.$form.trigger("reset"); // Reset comment form fields
+            } else {
+                this.$message.addClass("error").text("There was an error sending your message.");
+            }
+        }
+    }
+
+   new ContactForm($('#contact-form'));
+
    new GetAjaxPost();
 });
