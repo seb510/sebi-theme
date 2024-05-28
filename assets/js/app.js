@@ -113,5 +113,92 @@ jQuery( document ).ready(function($) {
         }
     }
 
+    class GetAjaxOptimizePost {
+        constructor() {
+            this.loadMoreBtn = $('#load-more-js');
+            this.contentBlock = $('.loop__row-js');
+            this.init();
+        }
+
+        init() {
+            this.currentPage = 1;
+            this.sortby = 'date';
+            this.sort = 'DESC';
+            this.search_name = '';
+            this.pPp = this.contentBlock.attr('data-ppage');
+            this.category = this.contentBlock.attr('data-category');
+            this.bindEvents();
+        }
+
+        bindEvents() {
+            this.loadMoreBtn.on('click', this.loadMore.bind(this));
+            $('#sorting-post').on('change', this.filterPost.bind(this));
+
+            $(document).on('keyup', '#search-name', this.debounceSearch.bind(this));
+        }
+
+        loadMore() {
+            this.currentPage++;
+            this.submitRequest('loadmore');
+        }
+
+        filterPost(sortInput) {
+            this.currentPage = 1;
+            this.sortby = sortInput.split('-')[0];
+            this.sort = sortInput.split('-')[1];
+            this.submitRequest('filter');
+        }
+
+        debounceSearch(e) {
+            const inputValue = $(e.target).val().toLowerCase();
+            clearTimeout(this.searchTimeout);
+            this.searchTimeout = setTimeout(() => {
+                this.search_name = inputValue;
+                this.submitRequest('filter');
+            }, 1000);
+        }
+
+        submitRequest(currentRequest) {
+            $.ajax({
+                type: 'POST',
+                url: my_ajax_object.ajax_url,
+                dataType: 'json',
+                data: {
+                    action: 'get_ajax_posts',
+                    paged: this.currentPage,
+                    ppp: this.pPp,
+                    category: this.category,
+                    sortby: this.sortby,
+                    sort: this.sort,
+                    search: this.search_name,
+                },
+                beforeSend: () => this.contentBlock.addClass('loading'),
+                success: (res) => {
+                    console.log(res);
+                    this.contentBlock.removeClass('loading');
+                    this.loadMoreBtn.toggle(this.currentPage < res.max);
+                    $(this.contentBlock)[currentRequest === 'filter' ? 'html' : 'append'](res.html);
+                },
+                error: (jqXHR, exception) => {
+                    this.handleError(jqXHR, exception);
+                },
+            });
+        }
+
+        handleError(jqXHR, exception) {
+            const messages = {
+                0: 'Not connect. Verify Network.',
+                404: 'Requested page not found (404).',
+                500: 'Internal Server Error (500).',
+                parsererror: 'Requested JSON parse failed.',
+                timeout: 'Time out error.',
+                abort: 'Ajax request aborted.',
+            };
+
+            const message = messages[jqXHR.status] || 'Uncaught Error. ' + jqXHR.responseText;
+            console.error(message);
+        }
+    }
+
    new GetAjaxPost();
 });
