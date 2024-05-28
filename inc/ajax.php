@@ -59,3 +59,33 @@ function get_ajax_posts() {
 
 add_action('wp_ajax_get_ajax_posts', 'get_ajax_posts');
 add_action('wp_ajax_nopriv_get_ajax_posts', 'get_ajax_posts');
+
+function send_contact_message() {
+    if (wp_verify_nonce($_POST['security'], 'send-message')) { // Verify nonce for security
+        $name = sanitize_text_field($_POST["name"]);
+        $email = sanitize_email($_POST["email"]);
+        $message = sanitize_text_field($_POST["message"]);
+
+        // Replace with your actual email address
+        $to = "your_email@example.com";
+        $subject = "Contact Form Message from " . $name;
+
+        $body = "Name: " . $name . "\n";
+        $body .= "Email: " . $email . "\n\n";
+        $body .= $message;
+
+        $headers = "From: " . $email . "\r\n";
+
+        if (mail($to, $subject, $body, $headers)) {
+            echo "success";
+        } else {
+            echo "error";
+        }
+    } else {
+        echo "Invalid request"; // Handle invalid nonce
+    }
+    wp_die(); // Ensure script execution ends here
+}
+
+add_action('wp_ajax_send_contact_message', 'send_contact_message');
+add_action('wp_ajax_nopriv_send_contact_message', 'send_contact_message'); // For logged-out users
