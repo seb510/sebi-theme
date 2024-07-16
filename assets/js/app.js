@@ -1,4 +1,4 @@
-jQuery( document ).ready(function($) {
+jQuery(document).ready(function ($) {
 
     class GetAjaxPost {
         constructor() {
@@ -13,14 +13,14 @@ jQuery( document ).ready(function($) {
             this.addListener();
         }
 
-        addListener () {
+        addListener() {
             let self = this;
-            this.loadMoreBtn.on('click',function(e) {
+            this.loadMoreBtn.on('click', function (e) {
                 e.preventDefault();
                 self.loadMore();
             });
-            $('#sorting-post').on('change', function() {
-                let current_sort =  this.value;
+            $('#sorting-post').on('change', function () {
+                let current_sort = this.value;
                 self.filterPost(current_sort);
             });
 
@@ -37,14 +37,15 @@ jQuery( document ).ready(function($) {
             })
         }
 
-        loadMore () {
-            this.currentPage++
-            this.submitRequest('loadmore')
+        loadMore() {
+            this.currentPage++;
+            this.submitRequest('loadmore');
         }
-        filterPost (sortInput) {
+
+        filterPost(sortInput) {
             this.currentPage = 1;
 
-             if(sortInput === 'date-asc') {
+            if (sortInput === 'date-asc') {
                 this.sortby = 'date';
                 this.sort = 'ASC';
             } else if (sortInput === 'date-desc') {
@@ -53,7 +54,7 @@ jQuery( document ).ready(function($) {
             } else if (sortInput === 'title-asc') {
                 this.sortby = 'title';
                 this.sort = 'ASC';
-            } else if(sortInput === 'title-desc') {
+            } else if (sortInput === 'title-desc') {
                 this.sortby = 'title';
                 this.sort = 'DESC';
             } else {
@@ -61,10 +62,10 @@ jQuery( document ).ready(function($) {
                 this.sort = 'DESC';
             }
 
-            this.submitRequest('filter')
+            this.submitRequest('filter');
         }
 
-        submitRequest (current_request) {
+        submitRequest(current_request) {
             let self = this;
             $.ajax({
                 type: 'POST',
@@ -77,20 +78,24 @@ jQuery( document ).ready(function($) {
                     category: self.category,
                     sortby: self.sortby,
                     sort: self.sort,
-                    search : self.search_name,
+                    search: self.search_name,
                 },
-                beforeSend:function (){
+                beforeSend: function () {
                     self.contentBlock.addClass('loading');
                 },
                 success: function (res) {
-                    console.log(res)
-                    self.contentBlock.removeClass('loading')
-                    if(self.currentPage >= res.max) {
+                    let data = res.data;
+                    self.contentBlock.removeClass('loading');
+                    if (self.currentPage >= data.max_pages) {
                         self.loadMoreBtn.hide();
                     } else {
                         self.loadMoreBtn.show();
                     }
-                    $(self.contentBlock)[current_request === 'filter' ? 'html' : 'append'](res.html);
+                    if (current_request === 'filter') {
+                        self.contentBlock.html(data.output);
+                    } else {
+                        self.contentBlock.append(data.output);
+                    }
                 },
                 error: function (jqXHR, exception) {
                     if (jqXHR.status === 0) {
@@ -112,95 +117,7 @@ jQuery( document ).ready(function($) {
             });
         }
     }
-
-    class GetAjaxOptimizePost {
-        constructor() {
-            this.loadMoreBtn = $('#load-more-js');
-            this.contentBlock = $('.loop__row-js');
-            this.init();
-        }
-
-        init() {
-            this.currentPage = 1;
-            this.sortby = 'date';
-            this.sort = 'DESC';
-            this.search_name = '';
-            this.pPp = this.contentBlock.attr('data-ppage');
-            this.category = this.contentBlock.attr('data-category');
-            this.bindEvents();
-        }
-
-        bindEvents() {
-            this.loadMoreBtn.on('click', this.loadMore.bind(this));
-            $('#sorting-post').on('change', this.filterPost.bind(this));
-
-            $(document).on('keyup', '#search-name', this.debounceSearch.bind(this));
-        }
-
-        loadMore() {
-            this.currentPage++;
-            this.submitRequest('loadmore');
-        }
-
-        filterPost(sortInput) {
-            this.currentPage = 1;
-            this.sortby = sortInput.split('-')[0];
-            this.sort = sortInput.split('-')[1];
-            this.submitRequest('filter');
-        }
-
-        debounceSearch(e) {
-            const inputValue = $(e.target).val().toLowerCase();
-            clearTimeout(this.searchTimeout);
-            this.searchTimeout = setTimeout(() => {
-                this.search_name = inputValue;
-                this.submitRequest('filter');
-            }, 1000);
-        }
-
-        submitRequest(currentRequest) {
-            $.ajax({
-                type: 'POST',
-                url: my_ajax_object.ajax_url,
-                dataType: 'json',
-                data: {
-                    action: 'get_ajax_posts',
-                    paged: this.currentPage,
-                    ppp: this.pPp,
-                    category: this.category,
-                    sortby: this.sortby,
-                    sort: this.sort,
-                    search: this.search_name,
-                },
-                beforeSend: () => this.contentBlock.addClass('loading'),
-                success: (res) => {
-                    console.log(res);
-                    this.contentBlock.removeClass('loading');
-                    this.loadMoreBtn.toggle(this.currentPage < res.max);
-                    $(this.contentBlock)[currentRequest === 'filter' ? 'html' : 'append'](res.html);
-                },
-                error: (jqXHR, exception) => {
-                    this.handleError(jqXHR, exception);
-                },
-            });
-        }
-
-        handleError(jqXHR, exception) {
-            const messages = {
-                0: 'Not connect. Verify Network.',
-                404: 'Requested page not found (404).',
-                500: 'Internal Server Error (500).',
-                parsererror: 'Requested JSON parse failed.',
-                timeout: 'Time out error.',
-                abort: 'Ajax request aborted.',
-            };
-
-            const message = messages[jqXHR.status] || 'Uncaught Error. ' + jqXHR.responseText;
-            console.error(message);
-        }
-    }
-
-       class ContactForm {
+    class ContactForm {
         constructor($form) {
             this.$form = $form;
             this.$message = $form.find('.form-message');
@@ -236,7 +153,7 @@ jQuery( document ).ready(function($) {
         }
     }
 
-   new ContactForm($('#contact-form'));
+    new ContactForm($('#contact-form'));
 
-   new GetAjaxPost();
+    new GetAjaxPost();
 });
