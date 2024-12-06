@@ -6,3 +6,4 @@ include 'inc/register-styles.php';
 include 'inc/menu.php';
 include 'inc/acf.php';
 include 'inc/ajax.php';
+include 'inc/gutenberg-blocks.php';
