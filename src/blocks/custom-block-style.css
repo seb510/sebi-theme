@@ -1,0 +1,35 @@
+.custom-advanced-block img {
+    max-width: 100%;
+    height: auto;
+}
+
+.custom-advanced-block .custom-block-button {
+    border-radius: 5px;
+    text-align: center;
+}
+
+/*****/
+.modern-block {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.modern-block img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.modern-block-button {
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.modern-block-button:hover {
+    background-color: #222;
+    color: #fff;
+}
+

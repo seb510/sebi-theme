@@ -1,39 +1,30 @@
-const defaultConfig = require('@wordpress/scripts/config/webpack.config');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 module.exports = {
-    ...defaultConfig,
+    mode: 'development', // або 'production'
     entry: {
-        'modern-card': './blocks/modern-card/index.js',
-        'product-card': './blocks/product-card/index.js',
+        'custom-block': './src/blocks/custom-block.js',
+        'modern-block': './src/blocks/modern-block.js',
     },
     output: {
-        path: path.resolve(__dirname, 'blocks'),
-        filename: '[name]/build/[name].js',
+        path: path.resolve(__dirname, 'src/blocks'),
+        filename: '[name].bundle.js', // Динамічне ім'я файлу
     },
-    plugins: [
-        ...defaultConfig.plugins.filter(plugin => plugin.constructor.name !== 'CleanWebpackPlugin'),
-        new MiniCssExtractPlugin({
-            filename: ({ chunk }) => `${chunk.name}/build/style.css`,
-            filename: ({ chunk }) => `${chunk.name}/build/editor.css`,
-        }),
-    ],
     module: {
         rules: [
-            ...defaultConfig.module.rules.map(rule => {
-                // Застосовуємо MiniCssExtractPlugin для стилів
-                if (rule.test && rule.test.toString().includes('css')) {
-                    return {
-                        ...rule,
-                        use: [
-                            MiniCssExtractPlugin.loader,
-                            ...rule.use.slice(1), // Забираємо решту конфігурацій стилів
-                        ],
-                    };
-                }
-                return rule;
-            }),
+            {
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-react', '@babel/preset-env'],
+                    },
+                },
+            },
         ],
+    },
+    resolve: {
+        extensions: ['.js', '.jsx'],
     },
 };
