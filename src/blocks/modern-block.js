@@ -1,7 +1,14 @@
-const {registerBlockType} = wp.blocks;
-const {InspectorControls, MediaUpload, RichText, ColorPalette, BlockControls, AlignmentToolbar} = wp.blockEditor;
-const {PanelBody, Button} = wp.components;
-const {__} = wp.i18n;
+const { registerBlockType } = wp.blocks;
+const {
+    InspectorControls,
+    MediaUpload,
+    RichText,
+    ColorPalette,
+    BlockControls,
+    AlignmentToolbar,
+} = wp.blockEditor;
+const { PanelBody, Button } = wp.components;
+const { __ } = wp.i18n;
 
 // Constants for reusable styles
 const BUTTON_STYLES = {
@@ -18,16 +25,28 @@ registerBlockType('custom/modern-block', {
     icon: 'star-filled',
     category: 'design',
     attributes: {
-        text: {type: 'string', source: 'html', selector: 'h2'},
-        image: {type: 'string', default: null},
-        buttonLabel: {type: 'string', default: __('Click Me', 'custom-blocks')},
-        buttonLink: {type: 'string', default: '#'},
-        bgColor: {type: 'string', default: '#ffffff'},
-        textColor: {type: 'string', default: '#000000'},
-        alignment: {type: 'string', default: 'center'},
+        text: { type: 'string', source: 'html', selector: 'h2' },
+        image: { type: 'string', default: null },
+        buttonLabel: { type: 'string', default: __('Click Me', 'custom-blocks') },
+        buttonLink: { type: 'string', default: '#' },
+        bgColor: { type: 'string', default: '#ffffff' },
+        textColor: { type: 'string', default: '#000000' },
+        buttonTextColor: { type: 'string', default: '#ffffff' }, // Новий атрибут для кольору тексту кнопки
+        titleTextColor: { type: 'string', default: '#000000' }, // Новий атрибут для кольору тексту заголовка (тайтла)
+        alignment: { type: 'string', default: 'center' },
     },
-    edit: ({attributes, setAttributes}) => {
-        const {text, image, buttonLabel, buttonLink, bgColor, textColor, alignment} = attributes;
+    edit: ({ attributes, setAttributes }) => {
+        const {
+            text,
+            image,
+            buttonLabel,
+            buttonLink,
+            bgColor,
+            textColor,
+            buttonTextColor,
+            titleTextColor,
+            alignment,
+        } = attributes;
 
         const renderColorPalette = (label, valueKey) => (
             <>
@@ -36,7 +55,7 @@ registerBlockType('custom/modern-block', {
                     value={attributes[valueKey]}
                     onChange={(value) => {
                         if (value) {
-                            setAttributes({[valueKey]: value});
+                            setAttributes({ [valueKey]: value });
                         }
                     }}
                 />
@@ -50,7 +69,7 @@ registerBlockType('custom/modern-block', {
                 style={{
                     ...BUTTON_STYLES,
                     backgroundColor: textColor,
-                    color: bgColor,
+                    color: buttonTextColor, // Додаємо окремий колір тексту для кнопки
                     filter: 'contrast(1.5)',
                 }}
             >
@@ -63,36 +82,49 @@ registerBlockType('custom/modern-block', {
                 <InspectorControls>
                     <PanelBody title={__('Block Settings', 'custom-blocks')}>
                         {renderColorPalette(__('Background Color', 'custom-blocks'), 'bgColor')}
-                        {renderColorPalette(__('Text Color', 'custom-blocks'), 'textColor')}
+                        {renderColorPalette(__('Text Color (Button Background)', 'custom-blocks'), 'textColor')}
+                        {renderColorPalette(__('Button Text Color', 'custom-blocks'), 'buttonTextColor')}
+                        {renderColorPalette(__('Title Text Color', 'custom-blocks'), 'titleTextColor')}
                     </PanelBody>
                 </InspectorControls>
                 <BlockControls>
                     <AlignmentToolbar
                         value={alignment}
-                        onChange={(align) => setAttributes({alignment: align})}
+                        onChange={(align) => setAttributes({ alignment: align })}
                     />
                 </BlockControls>
                 <div
                     className="modern-block block-has-content"
                     aria-live="polite"
-                    style={{backgroundColor: bgColor, color: textColor, textAlign: alignment}}
+                    style={{
+                        backgroundColor: bgColor,
+                        color: textColor,
+                        textAlign: alignment,
+                    }}
                 >
                     <MediaUpload
-                        onSelect={(media) => media.url && setAttributes({image: media.url})}
+                        onSelect={(media) => media.url && setAttributes({ image: media.url })}
                         allowedTypes={['image']}
-                        render={({open}) => (
+                        render={({ open }) => (
                             <div>
-                                <Button onClick={open} className={image ? 'image-button' : 'button button-large'}>
-                                    {image ? (
-                                        __('Uploaded Image', 'custom-blocks')
-                                    ) : (
-                                        __('Upload Image', 'custom-blocks')
-                                    )}
+                                <Button
+                                    onClick={open}
+                                    className={`block-editor-rich-text__editable wp-block-button__link wp-element-button rich-text ${image ? 'image-button' : 'button button-large'}`}
+                                >
+                                    {image
+                                        ? __( `${image.title} Uploaded`, 'custom-blocks')
+                                        : __('Upload Image', 'custom-blocks')}
                                 </Button>
                                 {image && (
                                     <div className="cm-image">
-                                        <img src={image}
-                                             alt={image ? __('Uploaded Image', 'custom-blocks') : __('No Image', 'custom-blocks')}/>
+                                        <img
+                                            src={image}
+                                            alt={
+                                                image
+                                                    ? __('Uploaded Image', 'custom-blocks')
+                                                    : __('No Image', 'custom-blocks')
+                                            }
+                                        />
                                     </div>
                                 )}
                             </div>
@@ -103,24 +135,29 @@ registerBlockType('custom/modern-block', {
                         aria-label={__('Editable Block Title', 'custom-blocks')}
                         placeholder={__('Add your text...', 'custom-blocks')}
                         value={text}
-                        onChange={(value) => setAttributes({text: value})}
+                        onChange={(value) => setAttributes({ text: value })}
+                        style={{ color: titleTextColor }} // Додаємо стиль для кольору тексту заголовка
                     />
                     <div>
-                        <label htmlFor="button-text">{__('Button Text:', 'custom-blocks')}</label>
+                        <label htmlFor="button-text">
+                            {__('Button Text:', 'custom-blocks')}
+                        </label>
                         <input
                             id="button-text"
                             type="text"
                             value={buttonLabel}
                             placeholder={__('Button Text...', 'custom-blocks')}
-                            onChange={(e) => setAttributes({buttonLabel: e.target.value})}
+                            onChange={(e) => setAttributes({ buttonLabel: e.target.value })}
                         />
-                        <label htmlFor="button-link">{__('Button Link:', 'custom-blocks')}</label>
+                        <label htmlFor="button-link">
+                            {__('Button Link:', 'custom-blocks')}
+                        </label>
                         <input
                             id="button-link"
                             type="url"
                             value={buttonLink}
                             placeholder={__('Button Link...', 'custom-blocks')}
-                            onChange={(e) => setAttributes({buttonLink: e.target.value})}
+                            onChange={(e) => setAttributes({ buttonLink: e.target.value })}
                         />
                     </div>
                     {renderButton(buttonLabel, buttonLink)}
@@ -128,17 +165,26 @@ registerBlockType('custom/modern-block', {
             </>
         );
     },
-    save: ({attributes}) => {
-        const {text, image, buttonLabel, buttonLink, bgColor, textColor, alignment} = attributes;
+    save: ({ attributes }) => {
+        const {
+            text,
+            image,
+            buttonLabel,
+            buttonLink,
+            bgColor,
+            textColor,
+            buttonTextColor,
+            titleTextColor,
+            alignment,
+        } = attributes;
 
         const renderSavedButton = () => (
             <a
-                href={buttonLink}
                 href={/^https?:\/\//.test(buttonLink) ? buttonLink : '#'}
                 style={{
                     ...BUTTON_STYLES,
                     backgroundColor: textColor,
-                    color: bgColor,
+                    color: buttonTextColor, // Додаємо колір тексту кнопки
                 }}
             >
                 {buttonLabel}
@@ -148,19 +194,31 @@ registerBlockType('custom/modern-block', {
         return (
             <div
                 className="modern-block"
-                style={{backgroundColor: bgColor, color: textColor, textAlign: alignment}}
+                style={{
+                    backgroundColor: bgColor,
+                    color: textColor,
+                    textAlign: alignment,
+                }}
             >
                 {image && (
                     <div className="cm-image">
-                        <img src={image} alt={__('Block Image', 'custom-blocks')}/>
+                        <img src={image} alt={__('Block Image', 'custom-blocks')} />
                     </div>
                 )}
                 {text ? (
-                    <RichText.Content tagName="h2" value={text}/>
+                    <RichText.Content
+                        tagName="h2"
+                        value={text}
+                        style={{ color: titleTextColor }} // Зберігаємо стиль заголовка
+                    />
                 ) : (
-                    <span className="richtext-placeholder" aria-hidden="true">
-        {__('Empty Block Title', 'custom-blocks')}
-    </span>
+                    <span
+                        className="richtext-placeholder"
+                        aria-hidden="true"
+                        style={{ color: titleTextColor }}
+                    >
+                        {__('Empty Block Title', 'custom-blocks')}
+                    </span>
                 )}
                 {renderSavedButton()}
             </div>
