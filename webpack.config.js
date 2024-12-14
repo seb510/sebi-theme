@@ -3,7 +3,6 @@ const path = require('path');
 module.exports = {
     mode: 'development', // або 'production'
     entry: {
-        'custom-block': './src/blocks/custom-block.js',
         'modern-block': './src/blocks/modern-block.js',
     },
     output: {
