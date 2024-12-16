@@ -31,8 +31,8 @@ registerBlockType('custom/modern-block', {
         buttonLink: { type: 'string', default: '#' },
         bgColor: { type: 'string', default: '#ffffff' },
         textColor: { type: 'string', default: '#000000' },
-        buttonTextColor: { type: 'string', default: '#ffffff' }, // Новий атрибут для кольору тексту кнопки
-        titleTextColor: { type: 'string', default: '#000000' }, // Новий атрибут для кольору тексту заголовка (тайтла)
+        buttonTextColor: { type: 'string', default: '#ffffff' },
+        titleTextColor: { type: 'string', default: '#000000' },
         alignment: { type: 'string', default: 'center' },
     },
     edit: ({ attributes, setAttributes }) => {
@@ -136,7 +136,7 @@ registerBlockType('custom/modern-block', {
                         placeholder={__('Add your text...', 'custom-blocks')}
                         value={text}
                         onChange={(value) => setAttributes({ text: value })}
-                        style={{ color: titleTextColor }} // Додаємо стиль для кольору тексту заголовка
+                        style={{ color: titleTextColor }}
                     />
                     <div>
                         <label htmlFor="button-text">
@@ -184,7 +184,7 @@ registerBlockType('custom/modern-block', {
                 style={{
                     ...BUTTON_STYLES,
                     backgroundColor: textColor,
-                    color: buttonTextColor, // Додаємо колір тексту кнопки
+                    color: buttonTextColor,
                 }}
             >
                 {buttonLabel}
