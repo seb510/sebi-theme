@@ -1,0 +1,61 @@
+# MacOS системні файли
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows системні файли
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Системні файли IDE/текстових редакторів
+.idea/
+.vscode/
+*.sublime-*
+*.bak
+*.tmp
+
+# PHPStorm/метадані проекту
+/.idea/
+/*.iml
+
+# Файли логів/відлагодження
+*.log
+
+# Node/NPM каталоги та файли
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+
+# Composer файли
+vendor/
+
+# Кеш WordPress і додаткових плагінів
+*.log
+*.debug
+wp-content/cache/
+wp-content/upgrade/
+wp-content/debug.log
+
+# Тимчасові файли WordPress
+wp-content/*.tmp
+wp-content/*.bak
+wp-content/*.swp
+wp-content/sessions/
+
+# Файли плагінів і медіа (опціонально, якщо не розробляєте конкретний плагін)
+wp-content/plugins/
+!wp-content/plugins/index.php
+wp-content/uploads/
+!wp-content/uploads/index.php
+
+# Бібліотеки, не додавати (опціонально)
+wp-content/themes/your-theme/node_modules/
+wp-content/themes/your-theme/vendor/
+
+# Файли локальних налаштувань
+wp-content/themes/your-theme/.env
+wp-content/themes/your-theme/.env.local
+wp-content/themes/your-theme/.DS_Store

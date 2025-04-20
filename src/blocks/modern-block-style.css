@@ -1,0 +1,42 @@
+:root {
+    --border-radius-small: 5px;
+    --border-radius-medium: 10px;
+    --margin-bottom: 15px;
+    --padding-block: 20px;
+    --transition-effect: all 0.3s ease-in-out;
+    /* Задайте фолбеки */
+    --transition-bg-color: background-color 0.3s ease;
+    --transition-color: color 0.3s ease;
+}
+.modern-block {
+    position: relative; /* Забезпечення контексту позиціонування */
+    overflow: hidden;
+    border-radius: var(--border-radius-medium);
+    padding: var(--padding-block);
+    text-align: center;
+    /* Замість all визначте конкретні параметри: */
+    transition: border-radius 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+.modern-block img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-medium);
+    margin-bottom: var(--margin-bottom);
+    z-index: 1; /* Зображення завжди нижче кнопки */
+}
+.modern-block-button {
+    position: relative;
+    z-index: 10; /* Кнопка на верхньому шарі */
+    font-weight: bold;
+    /* Заміна загальних transiton-ефектів */
+    transition: var(--transition-bg-color), var(--transition-color);
+    margin: 0 auto;
+}
+.modern-block-button:hover {
+    background-color: #222;
+    color: #fff;
+}
+.modern-block-button:focus {
+    outline: 2px solid #ccc; /* Фокус для доступності */
+    outline-offset: 2px;
+}
